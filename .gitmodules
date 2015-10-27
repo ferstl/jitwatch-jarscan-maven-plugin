@@ -1,0 +1,3 @@
+[submodule "jitwatch"]
+	path = jitwatch
+	url = git@github.com:AdoptOpenJDK/jitwatch.git
