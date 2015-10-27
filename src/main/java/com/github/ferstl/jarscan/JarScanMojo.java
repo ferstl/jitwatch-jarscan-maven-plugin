@@ -1,8 +1,10 @@
 package com.github.ferstl.jarscan;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +25,9 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.artifact.filter.ScopeArtifactFilter;
 import org.apache.maven.shared.artifact.filter.StrictPatternExcludesArtifactFilter;
 import org.apache.maven.shared.artifact.filter.StrictPatternIncludesArtifactFilter;
+
+import static java.nio.file.StandardOpenOption.CREATE;
+import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
 @Mojo(
     name = "scan",
@@ -62,6 +67,14 @@ public class JarScanMojo extends AbstractMojo {
   @Parameter(property = "excludes", defaultValue = "")
   private List<String> excludes;
 
+  /**
+   * The path of the report file. If not set the report is written to the console.
+   *
+   * @since 1.0.0
+   */
+  @Parameter(property = "reportFile")
+  private File reportFile;
+
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
     @SuppressWarnings("unchecked")
@@ -71,9 +84,9 @@ public class JarScanMojo extends AbstractMojo {
 
     for (Artifact dependency : dependencies) {
       if (filter.include(dependency)) {
-        try {
+        try (PrintWriter writer = createReportWriter()){
           System.out.println("Scanning " + dependency);
-          JarScan.iterateJar(dependency.getFile(), 325, new PrintWriter(new OutputStreamWriter(System.out)));
+          JarScan.iterateJar(dependency.getFile(), 325, writer);
           System.out.println("done: " + dependency);
           System.out.println();
         } catch (IOException e) {
@@ -81,6 +94,17 @@ public class JarScanMojo extends AbstractMojo {
         }
       }
     }
+  }
+
+  private PrintWriter createReportWriter() throws IOException{
+    if (this.reportFile != null) {
+      return new PrintWriter(Files.newBufferedWriter(this.reportFile.toPath(), CREATE, TRUNCATE_EXISTING));
+    }
+
+    return new PrintWriter(new OutputStreamWriter(System.out)) {
+      @Override
+      public void close() { /* NOP */ }
+    };
   }
 
   private ArtifactFilter createArtifactFilter() {
