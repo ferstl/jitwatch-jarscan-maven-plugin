@@ -5,12 +5,15 @@
 
   <groupId>com.github.ferstl</groupId>
   <artifactId>jitwatch-jarscan-maven-plugin</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>maven-plugin</packaging>
 
   <properties>
     <slf4j.version>1.7.7</slf4j.version>
     <logback.version>1.1.2</logback.version>
-    <java.version>1.7</java.version>
+    <java.version>1.8</java.version>
+    <maven.version>3.3.3</maven.version>
+    <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
     <tools.jar>${java.home}/../lib/tools.jar</tools.jar>
     <generated.source.dir>${project.build.directory}/generated-sources/java</generated.source.dir>
     <jitwatch.source.dir>${project.basedir}/jitwatch/src/main/java</jitwatch.source.dir>
@@ -19,20 +22,49 @@
 
   <dependencies>
     <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>${maven.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven.shared</groupId>
+      <artifactId>maven-common-artifact-filters</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${maven.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  
+    <!-- Required by JarScanner -->
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
       <version>${slf4j.version}</version>
     </dependency>
+    <!-- Required by JarScanner -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>${logback.version}</version>
     </dependency>
+    <!-- Required by JarScanner -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>${logback.version}</version>
     </dependency>
+    
     <dependency>
       <groupId>com.oracle</groupId>
       <artifactId>tools.jar</artifactId>
@@ -108,6 +140,29 @@
               </sources>
             </configuration>
           </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <configuration>
+          <goalPrefix>depgraph</goalPrefix>
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+        </configuration>
+        <executions>
+          <execution>
+            <id>mojo-descriptor</id>
+            <goals>
+              <goal>descriptor</goal>
+            </goals>
+          </execution>
+<!--           <execution> -->
+<!--             <id>help-goal</id> -->
+<!--             <goals> -->
+<!--               <goal>helpmojo</goal> -->
+<!--             </goals> -->
+<!--           </execution> -->
         </executions>
       </plugin>
     </plugins>
