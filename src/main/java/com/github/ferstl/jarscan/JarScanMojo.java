@@ -112,6 +112,8 @@ public class JarScanMojo extends AbstractMojo {
     Path jarFile = Paths.get(buildDirectory, finalName + ".jar");
     if (Files.exists(jarFile)) {
       printReport(this.project.getArtifact().toString(), jarFile.toFile());
+    } else {
+      getLog().warn("JAR file not found: " + jarFile);
     }
   }
 
