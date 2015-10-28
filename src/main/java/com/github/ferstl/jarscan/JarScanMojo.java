@@ -43,6 +43,9 @@ public class JarScanMojo extends AbstractMojo {
   @Component
   private MavenProject project;
 
+  @Parameter(property = "freqInlineSize", defaultValue = "325")
+  private int freqInlineSize;
+
   /**
    * The scope of the artifacts that should be included.
    *
@@ -86,7 +89,7 @@ public class JarScanMojo extends AbstractMojo {
       if (filter.include(dependency)) {
         try (PrintWriter writer = createReportWriter()){
           System.out.println("Scanning " + dependency);
-          JarScan.iterateJar(dependency.getFile(), 325, writer);
+          JarScan.iterateJar(dependency.getFile(), this.freqInlineSize, writer);
           System.out.println("done: " + dependency);
           System.out.println();
         } catch (IOException e) {
