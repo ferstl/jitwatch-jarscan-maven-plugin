@@ -19,7 +19,6 @@ import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -56,6 +55,14 @@ public class JarScanMojo extends AbstractMojo {
   private int freqInlineSize;
 
   /**
+   * The path of the report file. If not set the report is written to the console.
+   *
+   * @since 1.0.0
+   */
+  @Parameter(property = "reportFile")
+  private File reportFile;
+
+  /**
    * Analyze dependency of the project.
    *
    * @since 1.0.0
@@ -89,20 +96,22 @@ public class JarScanMojo extends AbstractMojo {
   @Parameter(property = "excludes", defaultValue = "")
   private List<String> excludes;
 
-  /**
-   * The path of the report file. If not set the report is written to the console.
-   *
-   * @since 1.0.0
-   */
-  @Parameter(property = "reportFile")
-  private File reportFile;
-
   @Override
-  public void execute() throws MojoExecutionException, MojoFailureException {
+  public void execute() throws MojoExecutionException {
     analyzeOwnArtifact();
 
     if (this.analyzeDependencies) {
       analyzeDependencies();
+    }
+  }
+
+  private void analyzeOwnArtifact() throws MojoExecutionException {
+    String buildDirectory = this.project.getBuild().getDirectory();
+    String finalName = this.project.getBuild().getFinalName();
+
+    Path jarFile = Paths.get(buildDirectory, finalName + ".jar");
+    if (Files.exists(jarFile)) {
+      printReport(this.project.getArtifact().toString(), jarFile.toFile());
     }
   }
 
@@ -119,16 +128,6 @@ public class JarScanMojo extends AbstractMojo {
     }
   }
 
-  private void analyzeOwnArtifact() throws MojoExecutionException {
-    String buildDirectory = this.project.getBuild().getDirectory();
-    String finalName = this.project.getBuild().getFinalName();
-
-    Path jarFile = Paths.get(buildDirectory, finalName + ".jar");
-    if (Files.exists(jarFile)) {
-      printReport(this.project.getArtifact().toString(), jarFile.toFile());
-    }
-  }
-
   private void printReport(String name, File file) throws MojoExecutionException {
     try (PrintWriter writer = createReportWriter()){
       System.out.println("Artifact: " + name);
@@ -137,18 +136,6 @@ public class JarScanMojo extends AbstractMojo {
     } catch (IOException e) {
       throw new MojoExecutionException(e.getMessage());
     }
-  }
-
-  private PrintWriter createReportWriter() throws IOException{
-    if (this.reportFile != null) {
-      BufferedWriter bw = Files.newBufferedWriter(this.reportFile.toPath(), StandardCharsets.UTF_8, CREATE, TRUNCATE_EXISTING);
-      return new PrintWriter(bw);
-    }
-
-    return new PrintWriter(new OutputStreamWriter(System.out)) {
-      @Override
-      public void close() { /* NOP */ }
-    };
   }
 
   private ArtifactFilter createArtifactFilter() {
@@ -167,6 +154,18 @@ public class JarScanMojo extends AbstractMojo {
     }
 
     return new AndArtifactFilter(filters);
+  }
+
+  private PrintWriter createReportWriter() throws IOException{
+    if (this.reportFile != null) {
+      BufferedWriter bw = Files.newBufferedWriter(this.reportFile.toPath(), StandardCharsets.UTF_8, CREATE, TRUNCATE_EXISTING);
+      return new PrintWriter(bw);
+    }
+
+    return new PrintWriter(new OutputStreamWriter(System.out)) {
+      @Override
+      public void close() { /* NOP */ }
+    };
   }
 
 }
