@@ -106,14 +106,17 @@ public class JarScanMojo extends AbstractMojo {
   }
 
   private void analyzeOwnArtifact() throws MojoExecutionException {
-    String buildDirectory = this.project.getBuild().getDirectory();
-    String finalName = this.project.getBuild().getFinalName();
+    // Ignore parent projects
+    if (!"pom".equals(this.project.getPackaging())) {
+      String buildDirectory = this.project.getBuild().getDirectory();
+      String finalName = this.project.getBuild().getFinalName();
 
-    Path jarFile = Paths.get(buildDirectory, finalName + ".jar");
-    if (Files.exists(jarFile)) {
-      printReport(this.project.getArtifact().toString(), jarFile.toFile());
-    } else {
-      getLog().warn("JAR file not found: " + jarFile);
+      Path jarFile = Paths.get(buildDirectory, finalName + ".jar");
+      if (Files.exists(jarFile)) {
+        printReport(this.project.getArtifact().toString(), jarFile.toFile());
+      } else {
+        getLog().warn("JAR file not found: " + jarFile);
+      }
     }
   }
 
