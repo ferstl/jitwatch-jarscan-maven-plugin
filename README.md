@@ -34,6 +34,19 @@ The plugin runs during the *verify* phase by default in order to be able to scan
     
 If you want to omit the group ID in the maven invocation, add it as [`<pluginGroup>`](https://maven.apache.org/settings.html#Plugin_Groups) to your settings.xml file.
 
+### Build
+
+Build the Plugin:
+
+    # Use --recursive for the submodule
+    git clone --recursive git@github.com:ferstl/jitwatch-jarscan-maven-plugin.git
+    mvn install
+
+Create the plugin documentation:
+
+    mvn site-deploy
+
+
 ### FAQ
 
 Q: How does this Maven plugin scan the own artifact for a project
