@@ -37,7 +37,7 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 @Mojo(
     name = "scan",
     aggregator = false,
-    defaultPhase = LifecyclePhase.NONE,
+    defaultPhase = LifecyclePhase.VERIFY,
     inheritByDefault = false,
     requiresDependencyCollection = ResolutionScope.TEST,
     requiresDependencyResolution = ResolutionScope.TEST,
