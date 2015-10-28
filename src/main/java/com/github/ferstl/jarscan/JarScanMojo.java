@@ -16,7 +16,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.adoptopenjdk.jitwatch.jarscan.JarScan;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
@@ -32,7 +31,6 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.artifact.filter.ScopeArtifactFilter;
 import org.apache.maven.shared.artifact.filter.StrictPatternExcludesArtifactFilter;
 import org.apache.maven.shared.artifact.filter.StrictPatternIncludesArtifactFilter;
-
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
@@ -83,8 +81,8 @@ public class JarScanMojo extends AbstractMojo {
   private String scope;
 
   /**
-   * Comma-separated list of artifacts to be included in the form of {@code groupId:artifactId:type:classifier}.
-   * Only relevant when {@code analyzeDependencies=true}.
+   * Comma-separated list of artifacts to be included in the form of {@code groupId:artifactId:type:classifier}. Only
+   * relevant when {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
    */
@@ -92,8 +90,8 @@ public class JarScanMojo extends AbstractMojo {
   private List<String> includes;
 
   /**
-   * Comma-separated list of artifacts to be excluded in the form of {@code groupId:artifactId:type:classifier}.
-   * Only relevant when {@code analyzeDependencies=true}.
+   * Comma-separated list of artifacts to be excluded in the form of {@code groupId:artifactId:type:classifier}. Only
+   * relevant when {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
    */
@@ -125,8 +123,7 @@ public class JarScanMojo extends AbstractMojo {
   }
 
   private void analyzeDependencies() throws MojoExecutionException {
-    @SuppressWarnings("unchecked")
-    Set<Artifact> dependencies = this.project.getDependencyArtifacts();
+    @SuppressWarnings("unchecked") Set<Artifact> dependencies = this.project.getDependencyArtifacts();
 
     ArtifactFilter filter = createArtifactFilter();
 
@@ -138,7 +135,7 @@ public class JarScanMojo extends AbstractMojo {
   }
 
   private void printReport(String name, File file) throws MojoExecutionException {
-    try (PrintWriter writer = createReportWriter()){
+    try (PrintWriter writer = createReportWriter()) {
       System.out.println("Artifact: " + name);
       JarScan.iterateJar(file, this.freqInlineSize, writer);
       System.out.println();
@@ -165,13 +162,14 @@ public class JarScanMojo extends AbstractMojo {
     return new AndArtifactFilter(filters);
   }
 
-  private PrintWriter createReportWriter() throws IOException{
+  private PrintWriter createReportWriter() throws IOException {
     if (this.reportFile != null) {
       BufferedWriter bw = Files.newBufferedWriter(this.reportFile.toPath(), StandardCharsets.UTF_8, CREATE, TRUNCATE_EXISTING);
       return new PrintWriter(bw);
     }
 
     return new PrintWriter(new OutputStreamWriter(System.out)) {
+
       @Override
       public void close() { /* NOP */ }
     };

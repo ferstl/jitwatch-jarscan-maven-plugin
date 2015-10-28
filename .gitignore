@@ -1,3 +1,7 @@
+.classpath
+.project
 .idea/
+target/
 *.iml
-/target/
+.settings/org.eclipse.core.resources.prefs
+.settings/org.eclipse.jdt.apt.core.prefs
