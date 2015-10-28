@@ -1,9 +1,11 @@
 package com.github.ferstl.jarscan;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +103,8 @@ public class JarScanMojo extends AbstractMojo {
 
   private PrintWriter createReportWriter() throws IOException{
     if (this.reportFile != null) {
-      return new PrintWriter(Files.newBufferedWriter(this.reportFile.toPath(), CREATE, TRUNCATE_EXISTING));
+      BufferedWriter bw = Files.newBufferedWriter(this.reportFile.toPath(), StandardCharsets.UTF_8, CREATE, TRUNCATE_EXISTING);
+      return new PrintWriter(bw);
     }
 
     return new PrintWriter(new OutputStreamWriter(System.out)) {
