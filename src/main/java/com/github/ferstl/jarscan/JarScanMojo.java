@@ -38,7 +38,6 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
     name = "scan",
     aggregator = false,
     defaultPhase = LifecyclePhase.VERIFY,
-    inheritByDefault = false,
     requiresDependencyCollection = ResolutionScope.TEST,
     requiresDependencyResolution = ResolutionScope.TEST,
     requiresDirectInvocation = false,
