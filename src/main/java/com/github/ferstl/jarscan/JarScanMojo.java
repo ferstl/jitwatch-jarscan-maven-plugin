@@ -7,6 +7,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -45,11 +47,24 @@ public class JarScanMojo extends AbstractMojo {
   @Component
   private MavenProject project;
 
+  /**
+   * The value of {@code XX:FreqInlineSize} option. The default is 325.
+   *
+   * @since 1.0.0
+   */
   @Parameter(property = "freqInlineSize", defaultValue = "325")
   private int freqInlineSize;
 
   /**
-   * The scope of the artifacts that should be included.
+   * Analyze dependency of the project.
+   *
+   * @since 1.0.0
+   */
+  @Parameter(property = "analyzeDependencies", defaultValue = "false")
+  private boolean analyzeDependencies;
+
+  /**
+   * The scope of the artifacts that should be included. Only relevant when {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
    */
@@ -58,6 +73,7 @@ public class JarScanMojo extends AbstractMojo {
 
   /**
    * Comma-separated list of artifacts to be included in the form of {@code groupId:artifactId:type:classifier}.
+   * Only relevant when {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
    */
@@ -66,6 +82,7 @@ public class JarScanMojo extends AbstractMojo {
 
   /**
    * Comma-separated list of artifacts to be excluded in the form of {@code groupId:artifactId:type:classifier}.
+   * Only relevant when {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
    */
@@ -82,6 +99,14 @@ public class JarScanMojo extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException, MojoFailureException {
+    analyzeOwnArtifact();
+
+    if (this.analyzeDependencies) {
+      analyzeDependencies();
+    }
+  }
+
+  private void analyzeDependencies() throws MojoExecutionException {
     @SuppressWarnings("unchecked")
     Set<Artifact> dependencies = this.project.getDependencyArtifacts();
 
@@ -89,15 +114,28 @@ public class JarScanMojo extends AbstractMojo {
 
     for (Artifact dependency : dependencies) {
       if (filter.include(dependency)) {
-        try (PrintWriter writer = createReportWriter()){
-          System.out.println("Scanning " + dependency);
-          JarScan.iterateJar(dependency.getFile(), this.freqInlineSize, writer);
-          System.out.println("done: " + dependency);
-          System.out.println();
-        } catch (IOException e) {
-          throw new MojoExecutionException(e.getMessage());
-        }
+        printReport(dependency.toString(), dependency.getFile());
       }
+    }
+  }
+
+  private void analyzeOwnArtifact() throws MojoExecutionException {
+    String buildDirectory = this.project.getBuild().getDirectory();
+    String finalName = this.project.getBuild().getFinalName();
+
+    Path jarFile = Paths.get(buildDirectory, finalName + ".jar");
+    if (Files.exists(jarFile)) {
+      printReport(this.project.getArtifact().toString(), jarFile.toFile());
+    }
+  }
+
+  private void printReport(String name, File file) throws MojoExecutionException {
+    try (PrintWriter writer = createReportWriter()){
+      System.out.println("Artifact: " + name);
+      JarScan.iterateJar(file, this.freqInlineSize, writer);
+      System.out.println();
+    } catch (IOException e) {
+      throw new MojoExecutionException(e.getMessage());
     }
   }
 
