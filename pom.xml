@@ -8,12 +8,90 @@
   <version>1.0.0-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
+  <name>JitWatch JarScan Maven Plugin</name>
+  <description>
+    A Maven plugin that scans the project artifact and its dependencies for methods that cannot be inlined by the JIT
+    compiler. It uses the JarScan utility from the JitWatch project to do that.
+    See https://github.com/AdoptOpenJDK/jitwatch .
+  </description>
+  <url>https://github.com/ferstl/jitwatch-jarscan-maven-plugin</url>
+
+  <licenses>
+    <license>
+      <name>BSD 3-Clause</name>
+      <url>http://opensource.org/licenses/BSD-3-Clause</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <issueManagement>
+    <system>Github</system>
+    <url>https://github.com/ferstl/jitwatch-jarscan-maven-plugin/issues</url>
+  </issueManagement>
+
+  <ciManagement>
+    <system>Travis CI</system>
+    <url>https://travis-ci.org/ferstl/jitwatch-jarscan-maven-plugin</url>
+  </ciManagement>
+
+  <developers>
+    <developer>
+      <id>ferstl</id>
+      <name>Stefan Ferstl</name>
+      <email>st.ferstl@gmail.com</email>
+      <url>https://github.com/ferstl</url>
+      <timezone>Europe/Zurich</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:https://github.com/ferstl/jitwatch-jarscan-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:ferstl/jitwatch-jarscan-maven-plugin.git</developerConnection>
+    <url>${project.url}</url>
+    <tag>HEAD</tag>
+  </scm>
+
+  <distributionManagement>
+    <repository>
+      <id>${distribution.release.id}</id>
+      <url>${distribution.release.url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>${distribution.snapshot.id}</id>
+      <url>${distribution.snapshot.url}</url>
+    </snapshotRepository>
+    <site>
+      <id>gh-pages</id>
+      <url>${project.scm.connection}</url>
+    </site>
+  </distributionManagement>
+
   <properties>
+    <!-- Plugin versions. -->
+    <maven-license-plugin.version>1.10.b1</maven-license-plugin.version>
+    <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
+    <maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
+    <maven-deploy-plugin.version>2.8.1</maven-deploy-plugin.version>
+    <maven-gpg-plugin.version>1.4</maven-gpg-plugin.version>
+    <maven-install-plugin.version>2.5.1</maven-install-plugin.version>
+    <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+    <maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
+    <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
+    <maven-project-info-reports-plugin.version>2.7</maven-project-info-reports-plugin.version>
+    <maven-release-plugin.version>2.4.2</maven-release-plugin.version>
+    <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
+    <maven-scm-publish-plugin.version>1.1</maven-scm-publish-plugin.version>
+    <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
+    <maven-site-plugin.version>3.3</maven-site-plugin.version>
+    <maven-surefire-plugin.version>2.16</maven-surefire-plugin.version>
+
+    <!-- Dependency versions -->
     <slf4j.version>1.7.7</slf4j.version>
     <logback.version>1.1.2</logback.version>
-    <java.version>1.8</java.version>
     <maven.version>3.3.3</maven.version>
-    <maven-plugin-plugin.version>3.4</maven-plugin-plugin.version>
+
+    <!-- Other settings -->
+    <java.version>1.8</java.version>
     <tools.jar>${java.home}/../lib/tools.jar</tools.jar>
     <generated.source.dir>${project.build.directory}/generated-sources/java</generated.source.dir>
     <jitwatch.source.dir>${project.basedir}/jitwatch/src/main/java</jitwatch.source.dir>
@@ -45,7 +123,7 @@
       <version>${maven.version}</version>
       <scope>provided</scope>
     </dependency>
-  
+
     <!-- Required by JarScanner -->
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -64,7 +142,7 @@
       <artifactId>logback-core</artifactId>
       <version>${logback.version}</version>
     </dependency>
-    
+
     <dependency>
       <groupId>com.oracle</groupId>
       <artifactId>tools.jar</artifactId>
@@ -75,21 +153,130 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-        </configuration>
-      </plugin>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven-clean-plugin.version}</version>
+        </plugin>
 
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <source>${java.version}</source>
+            <target>${java.version}</target>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven-deploy-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven-gpg-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven-install-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin.version}</version>
+          <configuration>
+            <links>
+              <link>http://docs.oracle.com/javase/7/docs/api/</link>
+              <link>http://maven.apache.org/ref/${maven.version}/maven-plugin-api/apidocs/</link>
+              <link>http://maven.apache.org/ref/${maven.version}/maven-artifact/apidocs/</link>
+              <link>http://maven.apache.org/ref/${maven.version}/maven-model/apidocs/</link>
+              <link>http://maven.apache.org/ref/${maven.version}/maven-core/apidocs/</link>
+            </links>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-plugin-plugin</artifactId>
+          <version>${maven-plugin-plugin.version}</version>
+          <configuration>
+            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>${maven-project-info-reports-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-release-plugin</artifactId>
+          <version>${maven-release-plugin.version}</version>
+          <configuration>
+            <mavenExecutorId>forked-path</mavenExecutorId>
+            <useReleaseProfile>false</useReleaseProfile>
+            <arguments>-Pdeploy-to-sonatype-oss</arguments>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-scm-publish-plugin</artifactId>
+          <version>${maven-scm-publish-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven-source-plugin.version}</version>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven-site-plugin.version}</version>
+          <configuration>
+            <!-- We are deploying site using scm-publish, not site-deploy... -->
+            <skipDeploy>true</skipDeploy>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <!-- Copy the JarScanner sources -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.7</version>
         <executions>
           <execution>
             <id>copy-jarscanner-sources</id>
@@ -142,7 +329,38 @@
           </execution>
         </executions>
       </plugin>
-      
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-scm-publish-plugin</artifactId>
+        <configuration>
+          <scmBranch>gh-pages</scmBranch>
+          <pubScmUrl>${project.scm.developerConnection}</pubScmUrl>
+          <content>${project.reporting.outputDirectory}</content>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>site-deploy</phase>
+            <goals>
+              <goal>publish-scm</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
@@ -157,12 +375,12 @@
               <goal>descriptor</goal>
             </goals>
           </execution>
-<!--           <execution> -->
-<!--             <id>help-goal</id> -->
-<!--             <goals> -->
-<!--               <goal>helpmojo</goal> -->
-<!--             </goals> -->
-<!--           </execution> -->
+          <execution>
+            <id>help-goal</id>
+            <goals>
+              <goal>helpmojo</goal>
+            </goals>
+          </execution>
         </executions>
       </plugin>
     </plugins>
