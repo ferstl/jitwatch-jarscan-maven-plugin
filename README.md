@@ -2,11 +2,11 @@
 *- A Maven plugin for the JitWatch JarScan Utility*
 
 The jitwatch-jarscan-maven-plugin integrates [jitwatch](https://github.com/AdoptOpenJDK/jitwatch)'s `JarScan` utility with Apache Maven.
-It allows you to scan your projects' artifacts and their dependencies to be scanned for large methods during a maven build.
+It allows you to scan your projects' artifacts and their dependencies for large methods during a maven build.
 
 ### How to use it
 
-#### Integrate it into your Maven build
+#### Option 1: Integrate it into your Maven build
 The plugin runs during the *verify* phase by default in order to be able to scan the artifact which was built in the preceding *package* phase.
 
     <plugin>
@@ -28,11 +28,11 @@ The plugin runs during the *verify* phase by default in order to be able to scan
       </executions>
     </plugin>
 
-#### Run it on your project
+#### Option 2: Run it directly on your project
 
     mvn com.github.ferstl:jitwatch-jarscan-maven-plugin:scan
     
-If you want to omit the group ID during the maven invocation, you can add it as plugin group to your settings.xml file.
+If you want to omit the group ID in the maven invocation, add it as [`<pluginGroup>`](https://maven.apache.org/settings.html#Plugin_Groups) to your settings.xml file.
 
 ### FAQ
 
