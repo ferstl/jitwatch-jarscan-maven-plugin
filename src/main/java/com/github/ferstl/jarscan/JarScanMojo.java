@@ -34,6 +34,9 @@ import org.apache.maven.shared.artifact.filter.StrictPatternIncludesArtifactFilt
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
+/**
+ * Scans the project's artifact and, if enabled, it's dependencies for large methods using JitWatch's JarScan utility.
+ */
 @Mojo(
     name = "scan",
     aggregator = false,
