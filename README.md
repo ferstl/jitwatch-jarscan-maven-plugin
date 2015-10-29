@@ -8,13 +8,15 @@ Take a look at the [plugin documentation](http://ferstl.github.io/jitwatch-jarsc
 
 ### How to use it
 
+The plugin is available on Maven Central. So no further repository configuration is required.
+
 #### Option 1: Integrate it into your Maven build
 The plugin runs during the *verify* phase by default in order to be able to scan the artifact which was built in the preceding *package* phase.
 
     <plugin>
       <groupId>com.github.ferstl</groupId>
       <artifactId>jitwatch-jarscan-maven-plugin</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0</version>
       <configuration>
         <freqInlineSize>325</freqInlineSize>
         <reportFile>target/jarscan-report</reportFile>
@@ -34,7 +36,9 @@ The plugin runs during the *verify* phase by default in order to be able to scan
 
     mvn com.github.ferstl:jitwatch-jarscan-maven-plugin:scan
     
-If you want to omit the group ID in the maven invocation, add it as [`<pluginGroup>`](https://maven.apache.org/settings.html#Plugin_Groups) to your settings.xml file.
+If you add `com.github.ferstl` as [`<pluginGroup>`](https://maven.apache.org/settings.html#Plugin_Groups) to your `settings.xml` file, you can just run:
+
+    mvn jarscan:scan
 
 ### Build
 
@@ -47,6 +51,11 @@ Build the Plugin:
 Create the plugin documentation:
 
     mvn site-deploy
+    
+Create the Release:
+(release:prepare release:perform does not work because the jitwatch sumodule is not checked out during release:perform)
+
+    mvn release:prepare -DpreparationGoals="clean deploy"
 
 
 ### FAQ
