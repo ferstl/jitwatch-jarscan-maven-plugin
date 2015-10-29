@@ -131,6 +131,7 @@ public class JarScanMojo extends AbstractMojo {
 
     for (Artifact dependency : dependencies) {
       if (filter.include(dependency)) {
+        getLog().debug("Analyzing " + dependency);
         printReport(dependency.toString(), dependency.getFile());
       }
     }
@@ -138,9 +139,9 @@ public class JarScanMojo extends AbstractMojo {
 
   private void printReport(String name, File file) throws MojoExecutionException {
     try (PrintWriter writer = createReportWriter()) {
-      System.out.println("Artifact: " + name);
+      writer.println("Artifact: " + name);
       JarScan.iterateJar(file, this.freqInlineSize, writer);
-      System.out.println();
+      writer.println();
     } catch (IOException e) {
       throw new MojoExecutionException(e.getMessage());
     }
