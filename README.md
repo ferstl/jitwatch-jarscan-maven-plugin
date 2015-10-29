@@ -23,6 +23,7 @@ The plugin runs during the *verify* phase by default in order to be able to scan
         <freqInlineSize>325</freqInlineSize>
         <reportFile>target/jarscan-report</reportFile>
         <analyzeDependencies>false</analyzeDependencies>
+        <!-- See plugin documentation for all options -->
       </configuration>
       <executions>
         <execution>
