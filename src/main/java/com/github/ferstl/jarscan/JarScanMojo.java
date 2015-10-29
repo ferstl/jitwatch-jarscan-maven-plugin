@@ -125,7 +125,7 @@ public class JarScanMojo extends AbstractMojo {
   }
 
   private void analyzeDependencies() throws MojoExecutionException {
-    @SuppressWarnings("unchecked") Set<Artifact> dependencies = this.project.getDependencyArtifacts();
+    Set<Artifact> dependencies = this.project.getDependencyArtifacts();
 
     ArtifactFilter filter = createArtifactFilter();
 
