@@ -83,7 +83,7 @@ public class JarScanMojo extends AbstractMojo {
   private String scope;
 
   /**
-   * Comma-separated list of artifacts to be included in the form of {@code groupId:artifactId:type:classifier}. Only
+   * List of artifacts to be included in the form of {@code groupId:artifactId:type:classifier}. Only
    * relevant when {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
@@ -92,7 +92,7 @@ public class JarScanMojo extends AbstractMojo {
   private List<String> includes;
 
   /**
-   * Comma-separated list of artifacts to be excluded in the form of {@code groupId:artifactId:type:classifier}. Only
+   * List of artifacts to be excluded in the form of {@code groupId:artifactId:type:classifier}. Only
    * relevant when {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
