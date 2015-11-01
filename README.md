@@ -6,7 +6,7 @@
 The jitwatch-jarscan-maven-plugin integrates [jitwatch](https://github.com/AdoptOpenJDK/jitwatch)'s `JarScan` utility with Apache Maven.
 It allows you to scan your projects' artifacts and their dependencies for large methods during a maven build.
 
-Take a look at the [plugin documentation](http://ferstl.github.io/jitwatch-jarscan-maven-plugin/plugin-info.html) for all configuration options of this plugin.
+Please refer to the [plugin documentation](http://ferstl.github.io/jitwatch-jarscan-maven-plugin/plugin-info.html) for all configuration options of this plugin.
 
 ### How to use it
 
@@ -51,10 +51,9 @@ Create and deploy the plugin documentation:
     
 Create the Release:
 
-(`mvn release:prepare release:perform` does not work because the jitwatch sumodule is not checked out during `release:perform`)
-
     mvn release:prepare -DpreparationGoals="clean deploy"
 
+(`mvn release:prepare release:perform` does not work because the jitwatch sumodule is not checked out during `release:perform`)
 
 ### FAQ
 
