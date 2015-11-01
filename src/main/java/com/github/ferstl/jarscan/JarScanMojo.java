@@ -50,7 +50,7 @@ public class JarScanMojo extends AbstractMojo {
   private MavenProject project;
 
   /**
-   * The value of {@code XX:FreqInlineSize} option. The default is 325.
+   * The value of the {@code -XX:FreqInlineSize} option. The default is 325.
    *
    * @since 1.0.0
    */
