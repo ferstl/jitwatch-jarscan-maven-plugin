@@ -18,7 +18,7 @@ The plugin runs during the *verify* phase by default in order to be able to scan
     <plugin>
       <groupId>com.github.ferstl</groupId>
       <artifactId>jitwatch-jarscan-maven-plugin</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.1</version>
       <executions>
         <execution>
           <id>jarscan</id>
