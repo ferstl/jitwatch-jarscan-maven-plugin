@@ -19,15 +19,9 @@ The plugin runs during the *verify* phase by default in order to be able to scan
       <groupId>com.github.ferstl</groupId>
       <artifactId>jitwatch-jarscan-maven-plugin</artifactId>
       <version>1.0.0</version>
-      <configuration>
-        <freqInlineSize>325</freqInlineSize>
-        <reportFile>target/jarscan-report</reportFile>
-        <analyzeDependencies>false</analyzeDependencies>
-        <!-- See plugin documentation for all options -->
-      </configuration>
       <executions>
         <execution>
-          <id>crate-jarscan-report</id>
+          <id>jarscan</id>
           <goals>
             <goal>scan</goal>
           </goals>
@@ -51,12 +45,13 @@ Build the Plugin:
     git clone --recursive git@github.com:ferstl/jitwatch-jarscan-maven-plugin.git
     mvn install
 
-Create the plugin documentation:
+Create and deploy the plugin documentation:
 
     mvn site-deploy
     
 Create the Release:
-(release:prepare release:perform does not work because the jitwatch sumodule is not checked out during release:perform)
+
+(`mvn release:prepare release:perform` does not work because the jitwatch sumodule is not checked out during `release:perform`)
 
     mvn release:prepare -DpreparationGoals="clean deploy"
 
