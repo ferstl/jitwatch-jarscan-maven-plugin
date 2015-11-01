@@ -22,7 +22,6 @@ import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -47,7 +46,7 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
     threadSafe = true)
 public class JarScanMojo extends AbstractMojo {
 
-  @Component
+  @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject project;
 
   /**
@@ -83,8 +82,8 @@ public class JarScanMojo extends AbstractMojo {
   private String scope;
 
   /**
-   * List of artifacts to be included in the form of {@code groupId:artifactId:type:classifier}. Only
-   * relevant when {@code analyzeDependencies=true}.
+   * List of artifacts to be included in the form of {@code groupId:artifactId:type:classifier}. Only relevant when
+   * {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
    */
@@ -92,8 +91,8 @@ public class JarScanMojo extends AbstractMojo {
   private List<String> includes;
 
   /**
-   * List of artifacts to be excluded in the form of {@code groupId:artifactId:type:classifier}. Only
-   * relevant when {@code analyzeDependencies=true}.
+   * List of artifacts to be excluded in the form of {@code groupId:artifactId:type:classifier}. Only relevant when
+   * {@code analyzeDependencies=true}.
    *
    * @since 1.0.0
    */
