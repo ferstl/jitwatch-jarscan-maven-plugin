@@ -51,7 +51,7 @@ Create and deploy the plugin documentation:
     
 Create the Release:
 
-    mvn release:prepare -DpreparationGoals="clean deploy"
+    mvn release:prepare -DpreparationGoals="clean deploy site-deploy"
 
 (`mvn release:prepare release:perform` does not work because the jitwatch sumodule is not checked out during `release:perform`)
 
