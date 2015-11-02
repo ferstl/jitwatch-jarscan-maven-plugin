@@ -7,10 +7,10 @@
   <version>1.0.2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
-  <name>JitWatch JarScan Maven Plugin</name>
+  <name>JITWatch JarScan Maven Plugin</name>
   <description>
     A Maven plugin that scans the project artifact and its dependencies for methods that cannot be inlined by the JIT
-    compiler. It uses the JarScan utility from the JitWatch project to do that.
+    compiler. It uses the JarScan utility from the JITWatch project to do that.
     See https://github.com/AdoptOpenJDK/jitwatch .
   </description>
   <url>https://github.com/ferstl/jitwatch-jarscan-maven-plugin</url>

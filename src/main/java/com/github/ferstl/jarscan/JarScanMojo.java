@@ -34,7 +34,7 @@ import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
 
 /**
- * Scans the project's artifact and, if enabled, it's dependencies for large methods using JitWatch's JarScan utility.
+ * Scans the project's artifact and, if enabled, it's dependencies for large methods using JITWatch's JarScan utility.
  */
 @Mojo(
     name = "scan",

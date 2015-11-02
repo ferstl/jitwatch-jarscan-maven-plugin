@@ -1,5 +1,5 @@
 # jitwatch-jarscan-maven-plugin
-*- A Maven plugin for the JitWatch JarScan Utility*
+*- A Maven plugin for the JITWatch JarScan Utility*
 
 [![Build Status](https://travis-ci.org/ferstl/jitwatch-jarscan-maven-plugin.svg?branch=master)](https://travis-ci.org/ferstl/jitwatch-jarscan-maven-plugin) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.ferstl/jitwatch-jarscan-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.ferstl/jitwatch-jarscan-maven-plugin)
 
@@ -67,6 +67,6 @@ A: The plugin runs in the *verify* phase of the maven build by default. This pha
  
 Q: There are no releases or tags of [jitwatch](https://github.com/AdoptOpenJDK/jitwatch) at the moment. How do you integrate it?
  
-A: JitWatch is added to this project as Git submodule. The maven build for this plugin will copy the classes for the `JarScan` utility and makes it part of this project.
- Take a look at the [Git repository](https://github.com/ferstl/jitwatch-jarscan-maven-plugin) of this project to see which revision of JitWatch is used.
+A: JITWatch is added to this project as Git submodule. The maven build for this plugin will copy the classes for the `JarScan` utility and makes it part of this project.
+ Take a look at the [Git repository](https://github.com/ferstl/jitwatch-jarscan-maven-plugin) of this project to see which revision of JITWatch is used.
  
