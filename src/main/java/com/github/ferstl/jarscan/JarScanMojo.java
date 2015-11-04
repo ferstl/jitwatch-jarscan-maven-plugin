@@ -66,7 +66,7 @@ public class JarScanMojo extends AbstractMojo {
   private File reportFile;
 
   /**
-   * Analyze dependency of the project.
+   * Analyze the dependencies of the project.
    *
    * @since 1.0.0
    */
