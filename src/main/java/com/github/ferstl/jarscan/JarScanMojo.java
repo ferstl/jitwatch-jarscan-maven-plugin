@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.adoptopenjdk.jitwatch.jarscan.JarScan;
+import org.adoptopenjdk.jitwatch.jarscan.freqinlinesize.FreqInlineSizeOperation;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
@@ -137,10 +138,13 @@ public class JarScanMojo extends AbstractMojo {
   }
 
   private void printReport(String name, File file) throws MojoExecutionException {
+    FreqInlineSizeOperation operation = new FreqInlineSizeOperation(this.freqInlineSize);
+    JarScan jarScan = new JarScan(operation);
+
     try (PrintWriter writer = createReportWriter()) {
+      jarScan.iterateJar(file);
       writer.println("Artifact: " + name);
-      JarScan.iterateJar(file, this.freqInlineSize, writer);
-      writer.println();
+      writer.println(operation.getReport());
     } catch (IOException e) {
       throw new MojoExecutionException(e.getMessage());
     }
@@ -170,11 +174,7 @@ public class JarScanMojo extends AbstractMojo {
       return new PrintWriter(bw);
     }
 
-    return new PrintWriter(new OutputStreamWriter(System.out)) {
-
-      @Override
-      public void close() { /* NOP */ }
-    };
+    return new PrintWriter(new OutputStreamWriter(System.out));
   }
 
 }

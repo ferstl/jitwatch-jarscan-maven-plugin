@@ -310,19 +310,23 @@
                 <resource>
                   <directory>${jitwatch.source.dir}</directory>
                   <includes>
-                    <include>org/adoptopenjdk/jitwatch/core/JITWatchConstants.java</include>
-                    <include>org/adoptopenjdk/jitwatch/jarscan/JarScan.java</include>
-                    <include>org/adoptopenjdk/jitwatch/loader/BytecodeLoader.java</include>
-                    <include>org/adoptopenjdk/jitwatch/loader/DisposableURLClassLoader.java</include>
+                    <include>org/adoptopenjdk/jitwatch/jarscan/</include>
                     <include>org/adoptopenjdk/jitwatch/journal/</include>
                     <include>org/adoptopenjdk/jitwatch/model/</include>
                     <include>org/adoptopenjdk/jitwatch/optimizedvcall/</include>
                     <include>org/adoptopenjdk/jitwatch/treevisitor/</include>
+                    <include>org/adoptopenjdk/jitwatch/core/JITWatchConstants.java</include>
+                    <include>org/adoptopenjdk/jitwatch/loader/BytecodeLoader.java</include>
+                    <include>org/adoptopenjdk/jitwatch/loader/DisposableURLClassLoader.java</include>
                     <include>org/adoptopenjdk/jitwatch/util/ClassUtil.java</include>
                     <include>org/adoptopenjdk/jitwatch/util/ParseUtil.java</include>
                     <include>org/adoptopenjdk/jitwatch/util/StringUtil.java</include>
                     <include>org/adoptopenjdk/jitwatch/util/TooltipUtil.java</include>
                   </includes>
+                  
+                  <excludes>
+                    <exclude>org/adoptopenjdk/jitwatch/jarscan/visualiser/</exclude>
+                  </excludes>
                 </resource>
               </resources>
             </configuration>
