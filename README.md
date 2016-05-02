@@ -44,6 +44,13 @@ Build the Plugin:
     # Use --recursive for the submodule
     git clone --recursive git@github.com:ferstl/jitwatch-jarscan-maven-plugin.git
     mvn install
+    
+    # Alternatively inititialize the submodule after cloning:
+    git clone git@github.com:ferstl/jitwatch-jarscan-maven-plugin.git
+    git submodule init
+    git submodule update
+    mvn install
+    
 
 Create and deploy the plugin documentation:
 
