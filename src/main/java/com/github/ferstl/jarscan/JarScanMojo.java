@@ -67,6 +67,14 @@ public class JarScanMojo extends AbstractMojo {
   private File reportFile;
 
   /**
+   * List of package name prefixes to analyze.
+   *
+   * @since 1.0.2
+   */
+  @Parameter(property = "packageNamePrefixes", defaultValue = "")
+  private List<String> packageNamePrefixes;
+
+  /**
    * Analyze the dependencies of the project.
    *
    * @since 1.0.0
@@ -99,6 +107,7 @@ public class JarScanMojo extends AbstractMojo {
    */
   @Parameter(property = "excludes", defaultValue = "")
   private List<String> excludes;
+
 
   @Override
   public void execute() throws MojoExecutionException {
@@ -140,6 +149,10 @@ public class JarScanMojo extends AbstractMojo {
   private void printReport(String name, File file) throws MojoExecutionException {
     FreqInlineSizeOperation operation = new FreqInlineSizeOperation(this.freqInlineSize);
     JarScan jarScan = new JarScan(operation);
+    for (String prefix : this.packageNamePrefixes) {
+      prefix = prefix.replace("*", "");
+      jarScan.addAllowedPackagePrefix(prefix);
+    }
 
     try (PrintWriter writer = createReportWriter()) {
       jarScan.iterateJar(file);
