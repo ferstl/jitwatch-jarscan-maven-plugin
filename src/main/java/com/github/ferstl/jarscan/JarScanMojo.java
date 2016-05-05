@@ -71,8 +71,8 @@ public class JarScanMojo extends AbstractMojo {
    *
    * @since 1.0.2
    */
-  @Parameter(property = "packageNamePrefixes", defaultValue = "")
-  private List<String> packageNamePrefixes;
+  @Parameter(property = "packages", defaultValue = "")
+  private List<String> packages;
 
   /**
    * Analyze the dependencies of the project.
@@ -149,7 +149,7 @@ public class JarScanMojo extends AbstractMojo {
   private void printReport(String name, File file) throws MojoExecutionException {
     FreqInlineSizeOperation operation = new FreqInlineSizeOperation(this.freqInlineSize);
     JarScan jarScan = new JarScan(operation);
-    for (String prefix : this.packageNamePrefixes) {
+    for (String prefix : this.packages) {
       prefix = prefix.replace("*", "");
       jarScan.addAllowedPackagePrefix(prefix);
     }
