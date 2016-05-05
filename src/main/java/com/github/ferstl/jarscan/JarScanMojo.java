@@ -187,7 +187,13 @@ public class JarScanMojo extends AbstractMojo {
       return new PrintWriter(bw);
     }
 
-    return new PrintWriter(new OutputStreamWriter(System.out));
+    return new PrintWriter(new OutputStreamWriter(System.out)) {
+
+      @Override
+      public void close() {
+        // NOP
+      }
+    };
   }
 
 }
