@@ -43,7 +43,7 @@ abstract class AbstractJarScanMojo extends AbstractMojo {
   /**
    * List of package name prefixes to analyze.
    *
-   * @since 1.0.2
+   * @since 1.1
    */
   @Parameter(property = "packages", defaultValue = "")
   private List<String> packages;
