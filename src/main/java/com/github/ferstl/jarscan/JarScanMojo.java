@@ -13,6 +13,9 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * Scans the project's artifact and, if enabled, it's dependencies for large methods using JITWatch's JarScan utility.
+ *
+ * @deprecated Use the goal {@code maxMethodSize} with {@code -Dlimit=325} or your previously chosen
+ * {@link #freqInlineSize}.
  */
 @Mojo(
     name = "scan",
@@ -22,6 +25,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
     requiresDependencyResolution = ResolutionScope.TEST,
     requiresDirectInvocation = false,
     threadSafe = true)
+@Deprecated
 public class JarScanMojo extends AbstractJarScanMojo {
 
   /**
