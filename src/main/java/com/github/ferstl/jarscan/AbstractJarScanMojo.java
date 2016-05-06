@@ -102,7 +102,7 @@ abstract class AbstractJarScanMojo extends AbstractMojo {
 
       Path jarFile = Paths.get(buildDirectory, finalName + ".jar");
       if (Files.exists(jarFile)) {
-        printReport(this.project.getArtifact().toString(), jarFile.toFile());
+        scanAndprintReport(this.project.getArtifact().toString(), jarFile.toFile());
       } else {
         getLog().warn("JAR file not found: " + jarFile);
       }
@@ -117,12 +117,12 @@ abstract class AbstractJarScanMojo extends AbstractMojo {
     for (Artifact dependency : dependencies) {
       if (filter.include(dependency)) {
         getLog().debug("Analyzing " + dependency);
-        printReport(dependency.toString(), dependency.getFile());
+        scanAndprintReport(dependency.toString(), dependency.getFile());
       }
     }
   }
 
-  private void printReport(String name, File file) throws MojoExecutionException {
+  private void scanAndprintReport(String name, File file) throws MojoExecutionException {
     IJarScanOperation operation = createOperation();
     JarScan jarScan = new JarScan(operation);
     for (String prefix : this.packages) {
