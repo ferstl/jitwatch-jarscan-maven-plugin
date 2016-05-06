@@ -10,6 +10,8 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 /**
  * List every method with bytecode larger than specified limit.
+ *
+ * @since 1.1
  */
 @Mojo(
     name = "maxMethodSize",
@@ -25,7 +27,7 @@ public class MaxMethodSizeMojo extends AbstractJarScanMojo {
    * Report methods larger than the specified bytes. The default for {@code -XX:MaxInlineSize} is 35. The default for
    * {@code -XX:FreqInlineSize} is 325.
    *
-   * @since 1.1.0
+   * @since 1.1
    */
   @Parameter(property = "limit", defaultValue = "0")
   private int limit;
