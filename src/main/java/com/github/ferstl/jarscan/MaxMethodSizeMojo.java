@@ -29,8 +29,17 @@ public class MaxMethodSizeMojo extends AbstractJarScanMojo {
    *
    * @since 1.1
    */
-  @Parameter(property = "limit", defaultValue = "0")
+  @Parameter(property = "limit", defaultValue = "1")
   private int limit;
+
+  @Override
+  protected String validateMojoParameters() {
+    if (this.limit <= 0) {
+      return "limit must be > 0.";
+    }
+
+    return null;
+  }
 
   @Override
   protected IJarScanOperation createOperation() {

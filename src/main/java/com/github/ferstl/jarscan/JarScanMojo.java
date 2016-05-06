@@ -37,6 +37,15 @@ public class JarScanMojo extends AbstractJarScanMojo {
   private int freqInlineSize;
 
   @Override
+  protected String validateMojoParameters() {
+    if (this.freqInlineSize <= 0) {
+      return "freqInlineSize must be > 0.";
+    }
+
+    return null;
+  }
+
+  @Override
   protected IJarScanOperation createOperation() {
     return new FreqInlineSizeOperation(this.freqInlineSize);
   }

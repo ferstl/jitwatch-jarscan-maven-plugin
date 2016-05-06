@@ -31,6 +31,15 @@ public class MethodLengthMojo extends AbstractJarScanMojo {
   private int length;
 
   @Override
+  protected String validateMojoParameters() {
+    if (this.length <= 0) {
+      return "length must be > 0.";
+    }
+
+    return null;
+  }
+
+  @Override
   protected IJarScanOperation createOperation() {
     return new MethodLengthOperation(this.length);
   }

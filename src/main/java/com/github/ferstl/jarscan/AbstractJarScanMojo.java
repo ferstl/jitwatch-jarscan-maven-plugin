@@ -19,6 +19,7 @@ import org.apache.maven.artifact.resolver.filter.AndArtifactFilter;
 import org.apache.maven.artifact.resolver.filter.ArtifactFilter;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.shared.artifact.filter.ScopeArtifactFilter;
@@ -84,7 +85,12 @@ abstract class AbstractJarScanMojo extends AbstractMojo {
 
 
   @Override
-  public void execute() throws MojoExecutionException {
+  public void execute() throws MojoExecutionException, MojoFailureException {
+    String errorMessage = validateMojoParameters();
+    if (errorMessage != null) {
+      throw new MojoFailureException(errorMessage);
+    }
+
     analyzeOwnArtifact();
 
     if (this.analyzeDependencies) {
@@ -93,6 +99,15 @@ abstract class AbstractJarScanMojo extends AbstractMojo {
   }
 
   protected abstract IJarScanOperation createOperation();
+
+  /**
+   * Validates the mojo parameters and returns an error message in case the validation fails.
+   *
+   * @return An error message describing the problem in case the mojo parameters are not correct, {@code null} else.
+   */
+  protected String validateMojoParameters() {
+    return null;
+  }
 
   private void analyzeOwnArtifact() throws MojoExecutionException {
     // Ignore parent projects

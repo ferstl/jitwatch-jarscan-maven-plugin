@@ -6,6 +6,7 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * List methods containing the specified bytecode sequence.
@@ -27,8 +28,17 @@ public class SequenceSearchMojo extends AbstractJarScanMojo {
    *
    * @since 1.1
    */
-  @Parameter(property = "sequence", defaultValue = "")
+  @Parameter(property = "sequence", required = true)
   private String sequence;
+
+  @Override
+  protected String validateMojoParameters() {
+    if (StringUtils.isBlank(this.sequence)) {
+      return "sequence must not be empty.";
+    }
+
+    return null;
+  }
 
   @Override
   protected IJarScanOperation createOperation() {

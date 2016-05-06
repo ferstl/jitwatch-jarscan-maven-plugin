@@ -31,8 +31,18 @@ public class AllocationCountMojo extends AbstractJarScanMojo {
   private int limit;
 
   @Override
+  protected String validateMojoParameters() {
+    if (this.limit < 0) {
+      return "limit must be >= 0.";
+    }
+
+    return null;
+  }
+
+  @Override
   protected IJarScanOperation createOperation() {
     return new AllocationCountOperation(this.limit);
   }
+
 
 }
