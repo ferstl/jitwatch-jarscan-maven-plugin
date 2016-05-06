@@ -9,7 +9,7 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 
 
 /**
- *
+ * List every method with bytecode larger than specified limit.
  */
 @Mojo(
     name = "maxMethodSize",
