@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2015-2016, Stefan Ferstl
+ * Licensed under https://raw.githubusercontent.com/ferstl/jitwatch-jarscan-maven-plugin/master/LICENSE
+ */
 package com.github.ferstl.jarscan;
 
 import org.adoptopenjdk.jitwatch.jarscan.IJarScanOperation;
