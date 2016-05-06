@@ -4,7 +4,17 @@
 [![Build Status](https://travis-ci.org/ferstl/jitwatch-jarscan-maven-plugin.svg?branch=master)](https://travis-ci.org/ferstl/jitwatch-jarscan-maven-plugin) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.ferstl/jitwatch-jarscan-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.ferstl/jitwatch-jarscan-maven-plugin)
 
 The jitwatch-jarscan-maven-plugin integrates [jitwatch](https://github.com/AdoptOpenJDK/jitwatch)'s [JarScan Tool](https://github.com/AdoptOpenJDK/jitwatch/wiki/JarScan) with Apache Maven.
-It allows you to scan your projects' artifacts and their dependencies for large methods during a Maven build.
+It allows you to scan your projects' artifacts and their dependencies during a Maven build. The supported scan modes are:
+
+- `maxMethodSize`
+- `sequenceCount`
+- `invokeCount`
+- `nextInstructionFreq`
+- `allocationCount`
+- `instructionCount`
+- `sequenceSearch`
+- `methodSizeHisto`
+- `methodLength`
 
 Please refer to the [plugin documentation](http://ferstl.github.io/jitwatch-jarscan-maven-plugin/plugin-info.html) for all configuration options of this plugin.
 
@@ -12,30 +22,39 @@ Please refer to the [plugin documentation](http://ferstl.github.io/jitwatch-jars
 
 The plugin is available on Maven Central. So no further repository configuration is required.
 
-### Option 1: Integrate it into your Maven build
+### Option 1: Run it directly on your project
+
+    mvn com.github.ferstl:jitwatch-jarscan-maven-plugin:<mode>
+    
+    # Example
+    mvn com.github.ferstl:jitwatch-jarscan-maven-plugin:maxMethodSize -Dlimit=325
+    
+If you add `com.github.ferstl` as [`<pluginGroup>`](https://maven.apache.org/settings.html#Plugin_Groups) to your `settings.xml` file, you can just run:
+
+    mvn jarscan:maxMethodSize -Dlimit=325
+
+### Option 2: Integrate it into your Maven build
 The plugin runs during the *verify* phase by default in order to be able to scan the artifact which was built in the preceding *package* phase.
 
     <plugin>
       <groupId>com.github.ferstl</groupId>
       <artifactId>jitwatch-jarscan-maven-plugin</artifactId>
-      <version>1.0.1</version>
+      <version>1.1</version>
       <executions>
         <execution>
-          <id>jarscan</id>
+          <id>max-method-size</id>
           <goals>
-            <goal>scan</goal>
+            <goal>maxMethodSize</goal>
           </goals>
+          <configuration>
+            <limit>325</limit>
+            <packages>com.github.ferstl</packages>
+            <reportFile>${project.build.directory}/jarscan-max-method-size.txt</reportFile>
+          </configuration>
         </execution>
       </executions>
     </plugin>
 
-### Option 2: Run it directly on your project
-
-    mvn com.github.ferstl:jitwatch-jarscan-maven-plugin:scan
-    
-If you add `com.github.ferstl` as [`<pluginGroup>`](https://maven.apache.org/settings.html#Plugin_Groups) to your `settings.xml` file, you can just run:
-
-    mvn jarscan:scan
 
 ## Build
 
