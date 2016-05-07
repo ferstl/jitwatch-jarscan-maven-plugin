@@ -3,7 +3,7 @@
 
 [![Build Status](https://travis-ci.org/ferstl/jitwatch-jarscan-maven-plugin.svg?branch=master)](https://travis-ci.org/ferstl/jitwatch-jarscan-maven-plugin) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.ferstl/jitwatch-jarscan-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.ferstl/jitwatch-jarscan-maven-plugin)
 
-The jitwatch-jarscan-maven-plugin integrates [jitwatch](https://github.com/AdoptOpenJDK/jitwatch)'s [JarScan Tool](https://github.com/AdoptOpenJDK/jitwatch/wiki/JarScan) with Apache Maven.
+The jitwatch-jarscan-maven-plugin integrates [JITWatch](https://github.com/AdoptOpenJDK/jitwatch)'s [JarScan Tool](https://github.com/AdoptOpenJDK/jitwatch/wiki/JarScan) with Apache Maven.
 It allows you to scan your projects' artifacts and their dependencies during a Maven build. The supported scan modes are:
 
 - `maxMethodSize`
@@ -70,7 +70,7 @@ A: The plugin runs in the *verify* phase of the Maven build by default. This pha
 
 -----
  
-Q: There are no releases or tags of [jitwatch](https://github.com/AdoptOpenJDK/jitwatch) at the moment. How do you integrate it?
+Q: There are no releases or tags of [JITWatch](https://github.com/AdoptOpenJDK/jitwatch) at the moment. How do you integrate it?
  
 A: JITWatch is added to this project as Git submodule. The Maven build for this plugin will copy the classes for the JarScan Tool and makes it part of this project.
  Take a look at the [Git repository](https://github.com/ferstl/jitwatch-jarscan-maven-plugin) of this project to see which revision of JITWatch is used.
@@ -99,4 +99,4 @@ Create the Release:
 
     mvn release:prepare -DpreparationGoals="clean deploy site-deploy"
 
-(`mvn release:prepare release:perform` does not work because the jitwatch sumodule is not checked out during `release:perform`)
+(`mvn release:prepare release:perform` does not work because the jitWatch sumodule is not checked out during `release:perform`)
